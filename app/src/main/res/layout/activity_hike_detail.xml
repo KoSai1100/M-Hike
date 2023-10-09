@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp"
+    android:orientation="vertical"
+    android:padding="8dp"
+    tools:context=".HikeDetailActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/txtname" />
+
+    <TextView
+        android:id="@+id/lblname"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/border" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/txtlocation" />
+
+    <TextView
+        android:id="@+id/lbllocation"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/border" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/txtdate" />
+
+    <TextView
+        android:id="@+id/lbldate"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/border" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/txtpacking" />
+
+    <TextView
+        android:id="@+id/lblparking"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/border" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/txtlength" />
+
+    <TextView
+        android:id="@+id/lbllength"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/border" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/txtlevel" />
+
+    <TextView
+        android:id="@+id/lbldifficulty"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/border" />
+
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/txtdescription" />
+
+    <TextView
+        android:id="@+id/lbldescription"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/border" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:text="@string/btnback" />
+
+        <Button
+            android:id="@+id/btnsave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/btnsave" />
+    </LinearLayout>
+</LinearLayout>
