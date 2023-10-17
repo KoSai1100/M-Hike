@@ -1,11 +1,11 @@
 package com.uog.mhike;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,7 +20,6 @@ import com.uog.mhike.database.Hike;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 
 public class HikeEntryActivity extends AppCompatActivity {
 
@@ -33,28 +32,29 @@ public class HikeEntryActivity extends AppCompatActivity {
 
     RadioButton rdoYes, rdoNo;
 
-    private String[] locations={"l1","l2","l3"};
+    public static final  String[] locations={"l1","l2","l3"};
     private String [] Difficulty={"Easy","Normal", "Hard"};
 
     private int id;
     private int locationIndex=0;
     private int difficultyIndex=0;
+    public static final int UPDATE_REQUEST=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hike_entry);
 
-        txthikename = findViewById(R.id.txthikename);
-        txtdate = findViewById(R.id.txtdate);
+        txthikename = findViewById(R.id.txtAdvname);
+        txtdate = findViewById(R.id.txtAdvdate);
         txtdescription = findViewById(R.id.txtdescription);
-        txtLength = findViewById(R.id.txtLength);
+        txtLength = findViewById(R.id.txtAdvLength);
 
-        btndate = findViewById(R.id.btndate);
+        btndate = findViewById(R.id.btnAdvdate);
         btnnext = findViewById(R.id.btnnext);
 
         spnDifficulty = findViewById(R.id.spnDifficulty);
-        spnLocation = findViewById(R.id.spnLocation);
+        spnLocation = findViewById(R.id.spnAdvLocation);
 
         rdoYes = findViewById(R.id.rdoYes);
         rdoNo = findViewById(R.id.rdoNo);
@@ -114,9 +114,9 @@ public class HikeEntryActivity extends AppCompatActivity {
         receivedData();
     }
         public void setDate(LocalDate date){
-   ZonedDateTime zdt = ZonedDateTime.now();
-//                txtdate.setText(date.toString());
-  txtdate.setText(zdt.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm")));
+//   ZonedDateTime zdt = ZonedDateTime.now();
+            txtdate.setText(date.toString());
+//  txtdate.setText(zdt.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm")));
         }
         String location, diff;
         private void gotoNext(){
@@ -165,7 +165,7 @@ public class HikeEntryActivity extends AppCompatActivity {
         intent.putExtra(Hike.LENGTH,length);
         intent.putExtra(Hike.PARKING,parking);
         intent.putExtra (Hike.DESCRIPTION,description);
-        startActivity(intent);
+        startActivityForResult(intent,UPDATE_REQUEST);
     }
 
         private void receivedData(){
@@ -206,14 +206,6 @@ public class HikeEntryActivity extends AppCompatActivity {
                     }
                 }
 
-//                //for difficulty spinner
-//                for (int i=0; i<Difficulty.length; i++) {
-//                    if(diff.equals(Difficulty[i])){
-//                        difficultyIndex=i;
-//                        spnDifficulty.setSelection(difficultyIndex);
-//                        break;
-//                    }
-//                }
 
                 /// for parking
                 if(parking.equalsIgnoreCase("Yes")){
@@ -222,10 +214,18 @@ public class HikeEntryActivity extends AppCompatActivity {
                 }else {
                     rdoNo.setChecked(true);
                 }
-            }
+            } ///END IF
 
             }
-
+     @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode==UPDATE_REQUEST && resultCode==RESULT_OK){
+            Intent intent=new Intent();
+            setResult(RESULT_OK,intent);
+            finish();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
         }
 
 

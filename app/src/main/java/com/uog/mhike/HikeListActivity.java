@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.uog.mhike.adapter.HikeAdapter;
@@ -27,6 +29,8 @@ public class HikeListActivity extends AppCompatActivity {
     private DatabaseHelper databaseHelper;
 
     private RecyclerView recyclerView;
+    public static final int UPDATE_REQUEST=1;
+    public static final int SEARCH_REQUEST=2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +47,7 @@ public class HikeListActivity extends AppCompatActivity {
             public void onButtonClick(int position, View v, long id) {
                 Hike hike=hikeList.get(position);
                 if(id==R.id.btndetail){
-
+                    gotoDetailView(hike);
                 }else if(id==R.id.btnedit){
                     gotoEntry(hike);
                 } else if (id == R.id.btndelete) {
@@ -51,7 +55,7 @@ public class HikeListActivity extends AppCompatActivity {
                     if (result != 1) {
                         new AlertDialog.Builder(getBaseContext()).setTitle("Error").setMessage("Still can't delete this Hike").show();
                     } else {
-                        search();
+                        search("");
                             }
                 }
             }
@@ -59,13 +63,32 @@ public class HikeListActivity extends AppCompatActivity {
 
 
         recyclerView.setAdapter(hikeAdapter);
-        search();
+        search("");
         FloatingActionButton fab=findViewById(R.id.fabAddHike);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(getBaseContext(),HikeEntryActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,UPDATE_REQUEST);
+            }
+        });
+
+        EditText txtsearch=findViewById(R.id.txtsearch);
+        Button btnsearch=findViewById(R.id.btnsearch);
+        Button btnAdvancedSearch=findViewById(R.id.btnAdvancedSearch);
+
+        btnsearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                search(txtsearch.getText().toString());
+            }
+        });
+
+        btnAdvancedSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               Intent intent=new Intent(getBaseContext(),HikeAdvanceSearchActivity.class);
+               startActivityForResult(intent,SEARCH_REQUEST);
             }
         });
     }
@@ -76,12 +99,12 @@ public class HikeListActivity extends AppCompatActivity {
    //  search();
     }
 
-    private void search(){
+    private void search(String keyword){
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    hikeList=databaseHelper.searchHike("");
+                    hikeList=databaseHelper.searchHike(keyword);
                     Log.i("MyName", hikeList.size() + "");
                     hikeAdapter.setHikeList(hikeList);
                     hikeAdapter.notifyDataSetChanged(); //refresh the data
@@ -95,7 +118,19 @@ public class HikeListActivity extends AppCompatActivity {
 
     //// pass the data to the HikeEntryActivity
     private void gotoEntry(Hike hike){
-        Intent intent=new Intent(this,HikeEntryActivity.class);
+        Intent intent=new Intent(this, HikeEntryActivity.class);
+        fillIntentData(intent,hike);
+        startActivityForResult(intent,UPDATE_REQUEST);
+    }
+
+    private void gotoDetailView(Hike hike){
+      Intent intent=new Intent(this, HikeDetailViewActivity.class);
+      fillIntentData(intent,hike);
+        startActivity(intent);
+    }
+
+    private void fillIntentData(Intent intent, Hike hike){
+
         intent.putExtra(Hike.ID,hike.getId());
         intent.putExtra(Hike.NAME,hike.getName());
         intent.putExtra(Hike.DATE,hike.getDate());
@@ -104,6 +139,42 @@ public class HikeListActivity extends AppCompatActivity {
         intent.putExtra(Hike.LENGTH,hike.getLength());
         intent.putExtra(Hike.PARKING,hike.getParking());
         intent.putExtra (Hike.DESCRIPTION,hike.getDescription());
-        startActivity(intent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode==UPDATE_REQUEST && resultCode==RESULT_OK){
+            search("");
+        }
+        else if (requestCode==SEARCH_REQUEST && resultCode==RESULT_OK){
+            String name= data.getStringExtra(Hike.NAME);
+            String location=data.getStringExtra(Hike.LOCATION);
+            String date=data.getStringExtra(Hike.DATE);
+            String length=data.getStringExtra(Hike.LENGTH);
+            Log.i("search",location );
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+//                    try {
+//                        hikeList=databaseHelper.searchHike(name,location,date,(length !=null && !length.isEmpty()?Double.parseDouble(length):null));
+//                        Log.i("MyName", hikeList.size() + "");
+//                        hikeAdapter.setHikeList(hikeList);
+//                        hikeAdapter.notifyDataSetChanged(); //refresh the data
+//                    }
+
+                    try {
+                        hikeList=databaseHelper.searchHike(name,location,date,(length !=null && !length.isEmpty()?Double.parseDouble(length):null));
+                        Log.i("MyName", hikeList.size() + "");
+                        hikeAdapter.setHikeList(hikeList);
+                        hikeAdapter.notifyDataSetChanged(); //refresh the data
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

@@ -1,5 +1,7 @@
 package com.uog.mhike.database;
 
+import java.time.ZonedDateTime;
+
 public class Hike {
 
     public static final String ID="id";
@@ -36,6 +38,7 @@ public class Hike {
         this.length = length;
         this.difficulty = difficulty;
         this.description = description;
+        ZonedDateTime.now().toEpochSecond();
     }
 
     public Hike( String name, String location, String date, String parking, Double length, String difficulty, String description) {

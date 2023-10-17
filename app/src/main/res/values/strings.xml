@@ -17,4 +17,6 @@
     <string name="btndetail">Detail</string>
     <string name="btnedit">Edit</string>
     <string name="btndelete">Delete</string>
+    <string name="lblObservation">Observation</string>
+    <string name="lblcomment">Comment</string>
 </resources>

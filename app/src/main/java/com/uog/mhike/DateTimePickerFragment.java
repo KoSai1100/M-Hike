@@ -22,7 +22,13 @@ public class DateTimePickerFragment extends DialogFragment implements DatePicker
 
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-        HikeEntryActivity mainActivity =(HikeEntryActivity)getActivity();
-        mainActivity.setDate(LocalDate.of(year, month, day));
+        if (getActivity() instanceof HikeEntryActivity) {
+            HikeEntryActivity mainActivity = (HikeEntryActivity) getActivity();
+            mainActivity.setDate(LocalDate.of(year, month, day));
+        }
+        else if(getActivity()instanceof HikeAdvanceSearchActivity){
+            HikeAdvanceSearchActivity searchActivity = (HikeAdvanceSearchActivity) getActivity();
+            searchActivity.setDate(LocalDate.of(year, month, day));
+        }
     }
 }

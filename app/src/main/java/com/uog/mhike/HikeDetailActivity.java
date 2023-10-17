@@ -3,6 +3,7 @@ package com.uog.mhike;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -91,6 +92,9 @@ btnback.setOnClickListener(new View.OnClickListener() {
 
                 }else{
                     result=databaseHelper.updateHike(hike);
+                    Intent intent=new Intent();
+                    setResult(RESULT_OK,intent);
+                    finish();
                 }
                 if(result>0){
 
